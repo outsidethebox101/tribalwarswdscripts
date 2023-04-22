@@ -1,0 +1,50 @@
+// ==UserScript==
+// @name         Farm Script (Premium Update necessary)
+// @version      1.0
+// @author       outsidethebox101
+// @include https://*.*.com.*/*screen=am_farm*
+// ==/UserScript==
+
+$.fn.hasAttr = function(name) {
+   return this.attr(name) !== typeof undefined && this.attr(name) !== false;
+};
+
+function aleatorio(inferior, superior) {
+    numPosibilidades = superior - inferior;
+    aleat = Math.random() * numPosibilidades;
+    return Math.round(parseInt(inferior) + aleat);
+}
+var tempo = 0;
+function timedClick(a){
+  if(a === undefined || a.hasClass('farm_icon_disabled') || !a.is(":visible")) return;
+  tempo += aleatorio(300, 500);
+  var k = tempo;
+  setTimeout(function(but){
+    if(!(a === undefined || a.hasClass('farm_icon_disabled') || !a.is(":visible")))
+        $(but).click();
+  }, k, a);
+}
+
+var arr = $("atualizarPagina");
+         setInterval(function() {
+			window.location.reload();
+		}, 900000);
+
+function farm(){
+    $('#am_widget_Farm #plunder_list tr').each(function(i, e){
+        if(i < 2) return true;
+        var a = $(this).find('td a.farm_icon_a'), b = $(this).find('td a.farm_icon_b')
+        timedClick(a);
+        timedClick(b);
+        var k = tempo;
+        setTimeout(function(but){
+            $(but).closest("tr").remove();
+        }, k, this);
+    });
+    if($('#am_widget_Farm #plunder_list tr').length > 2){
+        tempo += 1000;
+        var kkkk = tempo;
+        setTimeout(farm, kkkk);
+    }
+}
+farm();
